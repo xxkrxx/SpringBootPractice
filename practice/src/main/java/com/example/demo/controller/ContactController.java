@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.example.demo.entity.Contact;
 import com.example.demo.form.ContactForm;
-import com.example.demo.service.ContactService;
+import com.example.demo.repository.ContactRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -20,7 +21,7 @@ import jakarta.servlet.http.HttpSession;
 public class ContactController {
     // @Autowiredアノテーションについては後ほど解説します。
     @Autowired
-    private ContactService contactService;
+    private ContactRepository contactRepository;
 
     @GetMapping("/contact")
     public String contact(Model model) {
@@ -56,8 +57,19 @@ public class ContactController {
 
         HttpSession session = request.getSession();
         ContactForm contactForm = (ContactForm) session.getAttribute("contactForm");
-        
-        contactService.saveContact(contactForm);
+
+        Contact contact = new Contact();
+        contact.setLastName(contactForm.getLastName());
+        contact.setFirstName(contactForm.getFirstName());
+        contact.setEmail(contactForm.getEmail());
+        contact.setPhone(contactForm.getPhone());
+        contact.setZipCode(contactForm.getZipCode());
+        contact.setAddress(contactForm.getAddress());
+        contact.setBuildingName(contactForm.getBuildingName());
+        contact.setContactType(contactForm.getContactType());
+        contact.setBody(contactForm.getBody());
+
+        contactRepository.save(contact);
 
         return "redirect:/contact/complete";
     }

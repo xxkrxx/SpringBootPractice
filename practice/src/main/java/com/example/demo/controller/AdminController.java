@@ -1,20 +1,37 @@
 
 package com.example.demo.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.example.demo.entity.Contact;
 import com.example.demo.form.SigninForm;
 import com.example.demo.form.SignupForm;
 import com.example.demo.service.AdminService;
+import com.example.demo.service.ContactService;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+	
+	@Autowired
+	private ContactService contactService;
+	
+	// お問い合わせの一覧画面を表示するメソッド
+	@GetMapping("/contacts")
+	public String showContact(Model model) {
+		// お問い合わせの一覧データを取得し、モデルに追加する
+		List<Contact> contacts = contactService.getAllContacts();//お問い合わせデータを取得する例
+		model.addAttribute("contacts", contacts);
+		return "contact";
+	}
 	
 	@Autowired
 	private AdminService adminService;
@@ -54,3 +71,4 @@ public class AdminController {
 	    return "signin/admin_signin";// "signup/admin_signin"というビューの名前を返す
 	}
 }
+

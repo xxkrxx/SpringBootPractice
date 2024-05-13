@@ -12,7 +12,8 @@ public class AdminService {
 	
 	public void registerUser(String lastName, String firstName, String email, String password) {
 		// SQLクエリの作成
-		String sql = "INSERT INTO user(last_name, first_name, email, passwprd) VALUES (?, ?, ?, ?)";
+		String sql = "INSERT INTO admins(last_name, first_name, email, password) VALUES (?, ?, ?, ?)";
+
 		// JdbcTemplateを使ってデータベースに新しいユーザー情報を挿入
 		jdbcTemplate.update(sql, lastName, firstName, email, password);
 	}

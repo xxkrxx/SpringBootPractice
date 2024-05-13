@@ -30,7 +30,7 @@ public class AdminController {
 		// お問い合わせの一覧データを取得し、モデルに追加する
 		List<Contact> contacts = contactService.getAllContacts();//お問い合わせデータを取得する例
 		model.addAttribute("contacts", contacts);
-		return "contact";
+		return "admin/contacts/admin_contacts_list";
 	}
 	
 	@Autowired

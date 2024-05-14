@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -16,6 +17,7 @@ import com.example.demo.form.SigninForm;
 import com.example.demo.form.SignupForm;
 import com.example.demo.service.AdminService;
 import com.example.demo.service.ContactService;
+
 
 @Controller
 @RequestMapping("/admin")
@@ -31,6 +33,14 @@ public class AdminController {
 		List<Contact> contacts = contactService.getAllContacts();//お問い合わせデータを取得する例
 		model.addAttribute("contacts", contacts);
 		return "admin/contacts/admin_contacts_list";
+	}
+	
+	//特定のIDのコンタクト詳細を表示するメソッド
+	@GetMapping("/contacts/{id}")
+	public String showContactDetails(@PathVariable Long id, Model model) {
+		Contact contact = contactService.getContactById(id);
+		model.addAttribute("contact", contact);
+		return "admin/contacts/admin_contact_details";
 	}
 	
 	@Autowired

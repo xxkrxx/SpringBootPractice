@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,8 @@ public class ContactServiceImpl implements ContactService {
         // エンティティの保存
         contactRepository.save(contact);
     }
-
+    
+    @Override
     public List<Contact> getAllContacts() {
         // データベースからすべての連絡先情報を取得する
         Iterable<Contact> contactsIterable = contactRepository.findAll();
@@ -41,5 +43,11 @@ public class ContactServiceImpl implements ContactService {
         contactsIterable.forEach(contacts::add);
         // 取得した連絡先情報のリストを返す
         return contacts;
+    }
+    
+    @Override
+    public Contact getContactById(Long id) {
+    	Optional<Contact> contact = contactRepository.findById(id);
+    	return contact.orElse(null);
     }
 }

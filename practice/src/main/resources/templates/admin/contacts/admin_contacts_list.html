@@ -15,7 +15,7 @@
         </tr>
         <!-- 連絡先リストの表示 -->
         <tr th:each="contact : ${contacts}">
-            <td th:text="${contact.id}"></td>
+            <td><a th:href="@{'/admin/contacts/' + ${contact.id}}" th:text="${contact.id}"></a></td>
             <td th:text="${contact.lastName}"></td>
             <td th:text="${contact.firstName}"></td>
             <td th:text="${contact.contactType}"></td>
@@ -23,6 +23,7 @@
     </table>
 </body>
 </html>
+
 
 
 

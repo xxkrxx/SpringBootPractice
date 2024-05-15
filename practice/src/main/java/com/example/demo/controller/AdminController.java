@@ -18,7 +18,6 @@ import com.example.demo.form.SignupForm;
 import com.example.demo.service.AdminService;
 import com.example.demo.service.ContactService;
 
-
 @Controller
 @RequestMapping("/admin")
 public class AdminController {

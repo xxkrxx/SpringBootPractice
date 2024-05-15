@@ -14,12 +14,12 @@
             <th>お問い合わせ種別</th>
         </tr>
         <!-- 連絡先リストの表示 -->
-        <tr th:each="contact : ${contacts}">
-            <td><a th:href="@{'/admin/contacts/' + ${contact.id}}" th:text="${contact.id}"></a></td>
-            <td th:text="${contact.lastName}"></td>
-            <td th:text="${contact.firstName}"></td>
-            <td th:text="${contact.contactType}"></td>
-        </tr>
+		<tr th:each="contact : ${contacts}">
+		    <td><a th:href="@{'/admin/contacts/' + ${contact.id}}" th:text="${contact.id}"></a></td>
+		    <td th:text="${contact.lastName}"></td>
+		    <td th:text="${contact.firstName}"></td>
+		    <td th:text="${contact.contactType}"></td>
+		</tr>
     </table>
 </body>
 </html>

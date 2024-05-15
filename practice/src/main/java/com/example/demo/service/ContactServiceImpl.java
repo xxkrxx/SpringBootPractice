@@ -17,6 +17,7 @@ public class ContactServiceImpl implements ContactService {
     @Autowired
     private ContactRepository contactRepository;
     
+    @Override
     public void saveContact(ContactForm contactForm) {
         // ContactFormからContactエンティティへの変換
         Contact contact = new Contact();

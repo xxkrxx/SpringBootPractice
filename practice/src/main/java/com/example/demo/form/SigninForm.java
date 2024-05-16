@@ -1,24 +1,25 @@
 package com.example.demo.form;
 
 public class SigninForm {
-    private String id;
-    private String name;
+    private String email;
+    private String password;
 
     public SigninForm() {}
 
-    public String getId() {
-        return id;
+
+    public String getEmail() {
+        return email;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getName() {
-        return name;
+    public String getPassword() {
+        return password;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

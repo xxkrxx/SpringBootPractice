@@ -1,20 +1,28 @@
 package com.example.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+
+import com.example.demo.entity.Admin;
+import com.example.demo.repository.AdminRepository;
 
 @Service
 public class AdminService {
-	
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
-	
-	public void registerUser(String lastName, String firstName, String email, String password) {
-		// SQLクエリの作成
-		String sql = "INSERT INTO admins(last_name, first_name, email, password) VALUES (?, ?, ?, ?)";
 
-		// JdbcTemplateを使ってデータベースに新しいユーザー情報を挿入
-		jdbcTemplate.update(sql, lastName, firstName, email, password);
-	}
+    @Autowired
+    private AdminRepository adminRepository;
+
+    public boolean signin(String email, String password) {
+        int count = adminRepository.countByEmailAndPassword(email, password);
+        return count > 0;
+    }
+
+    public void registerUser(String lastName, String firstName, String email, String password) {
+        Admin admin = new Admin();
+        admin.setLastName(lastName);
+        admin.setFirstName(firstName);
+        admin.setEmail(email);
+        admin.setPassword(password);
+        adminRepository.save(admin);
+    }
 }

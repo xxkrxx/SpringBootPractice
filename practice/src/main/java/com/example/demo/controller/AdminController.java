@@ -21,63 +21,75 @@ import com.example.demo.service.ContactService;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-	
-	@Autowired
-	private ContactService contactService;
-	
-	// お問い合わせの一覧画面を表示するメソッド
-	@GetMapping("/contacts")
-	public String showContact(Model model) {
-		// お問い合わせの一覧データを取得し、モデルに追加する
-		List<Contact> contacts = contactService.getAllContacts();//お問い合わせデータを取得する例
-		model.addAttribute("contacts", contacts);
-		return "admin/contacts/admin_contacts_list";
-	}
-	
-	//特定のIDのコンタクト詳細を表示するメソッド
-	@GetMapping("/contacts/{id}")
-	public String showContactDetails(@PathVariable Long id, Model model) {
-		Contact contact = contactService.getContactById(id);
-		model.addAttribute("contact", contact);
-		return "admin/contacts/admin_contact_details";
-	}
-	
-	@Autowired
-	private AdminService adminService;
-	
-	// 新規登録フォームを表示するメソッド
-	@RequestMapping(value = "/signup", method = RequestMethod.GET)
-	public String signup(Model model) {
-		SignupForm signupForm = new SignupForm();
-		signupForm.setLastName("");
-		signupForm.setFirstName("");
-		signupForm.setEmail("");
-		signupForm.setPassword("");
-		model.addAttribute("signupForm", signupForm);
-		model.addAttribute("message", "管理者情報を入力してください");
-		
-		return "signup/admin_signup"; // "signup/admin_signup"というビューの名前を返す
-	}
-	
-	// 新規登録を処理するメソッド
-	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-	public String signup(@ModelAttribute SignupForm signupForm, Model model) {
-	    // フォームから受け取ったユーザー情報を使って新規登録処理を行う    
-	    adminService.registerUser(signupForm.getLastName(), signupForm.getFirstName(), signupForm.getEmail(), signupForm.getPassword());
-	    return "redirect:/signin";
-	}
+    
+    @Autowired
+    private ContactService contactService;
+    
+    @Autowired
+    private AdminService adminService;
+    
+    // お問い合わせの一覧画面を表示するメソッド
+    @GetMapping("/contacts")
+    public String showContact(Model model) {
+        // お問い合わせの一覧データを取得し、モデルに追加する
+        List<Contact> contacts = contactService.getAllContacts(); // お問い合わせデータを取得する例
+        model.addAttribute("contacts", contacts);
+        return "admin/contacts/admin_contacts_list";
+    }
+    
+    // 特定のIDのコンタクト詳細を表示するメソッド
+    @GetMapping("/contacts/{id}")
+    public String showContactDetails(@PathVariable Long id, Model model) {
+        Contact contact = contactService.getContactById(id);
+        model.addAttribute("contact", contact);
+        return "admin/contacts/admin_contact_details";
+    }
+    
+    // 新規登録フォームを表示するメソッド
+    @RequestMapping(value = "/signup", method = RequestMethod.GET)
+    public String signup(Model model) {
+        SignupForm signupForm = new SignupForm();
+        signupForm.setLastName("");
+        signupForm.setFirstName("");
+        signupForm.setEmail("");
+        signupForm.setPassword("");
+        model.addAttribute("signupForm", signupForm);
+        model.addAttribute("message", "管理者情報を入力してください");
+        
+        return "signup/admin_signup"; // "signup/admin_signup"というビューの名前を返す
+    }
+    
+    // 新規登録を処理するメソッド
+    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+    public String signup(@ModelAttribute SignupForm signupForm, Model model) {
+        // フォームから受け取ったユーザー情報を使って新規登録処理を行う    
+        adminService.registerUser(signupForm.getLastName(), signupForm.getFirstName(), signupForm.getEmail(), signupForm.getPassword());
+        return "redirect:/admin/signin";
+    }
 
-	
-	 // ログインフォームを表示するメソッド
-	@RequestMapping(value = "/signin", method = RequestMethod.GET)
-	public String signin(Model model) {
-	    SigninForm signinForm = new SigninForm();
-	    signinForm.setId("");
-	    signinForm.setName("");
-	    model.addAttribute("signinForm", signinForm);
-	    model.addAttribute("message", "管理者情報を入力してください");
-	    
-	    return "signin/admin_signin";// "signup/admin_signin"というビューの名前を返す
-	}
+    // ログインフォームを表示するメソッド
+    @RequestMapping(value = "/signin", method = RequestMethod.GET)
+    public String signin(Model model) {
+        SigninForm signinForm = new SigninForm();
+        model.addAttribute("signinForm", signinForm);
+        model.addAttribute("message", "管理者情報を入力してください");
+        
+        return "signin/admin_signin";
+    }
+    
+    // ログイン処理を行うメソッド
+    @RequestMapping(value = "/signin", method = RequestMethod.POST)
+    public String login(@ModelAttribute SigninForm signinForm, Model model) {
+        // ログイン処理を行う
+        boolean loginSuccess = adminService.signin(signinForm.getEmail(), signinForm.getPassword());
+        if (loginSuccess) {
+            return "redirect:/admin/contacts";
+        } else {
+            model.addAttribute("message", "ログインに失敗しました。管理者情報を確認してください。");
+            return "signin/admin_signin"; // 修正されたビュー名
+        }
+    }
 }
+
+
 

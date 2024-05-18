@@ -51,4 +51,27 @@ public class ContactServiceImpl implements ContactService {
     	Optional<Contact> contact = contactRepository.findById(id);
     	return contact.orElse(null);
     }
+    
+    @Override
+    public void updateContact(Long id, ContactForm contactForm) {
+    	Optional<Contact> contactOpt = contactRepository.findById(id);
+    	if(contactOpt.isPresent()) {
+    		Contact contact = contactOpt.get();
+    		contact.setLastName(contactForm.getLastName());
+    		contact.setFirstName(contactForm.getFirstName());
+    		contact.setEmail(contactForm.getEmail());
+    		contact.setPhone(contactForm.getPhone());
+    		contact.setZipCode(contactForm.getZipCode());
+    		contact.setAddress(contactForm.getAddress());
+    		contact.setBuildingName(contactForm.getBuildingName());
+    		contact.setContactType(contactForm.getContactType());
+    		contact.setBody(contactForm.getBody());
+    		contactRepository.save(contact);
+    	}
+    }
+    
+	@Override
+	public void deleteContact(Long id) {
+		contactRepository.deleteById(id);
+	}
 }
